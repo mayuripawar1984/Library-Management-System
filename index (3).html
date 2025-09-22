@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+      color: #fff;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: fadeIn 1s ease-in-out;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    nav button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 25px;
+      background: #fff;
+      color: #11998e;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    nav button:hover {
+      background: #11998e;
+      color: #fff;
+    }
+    .section {
+      display: none;
+      animation: slideUp 0.5s ease-in-out;
+    }
+    .active {
+      display: block;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    form input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+    form button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #11998e;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    form button:hover {
+      background: #38ef7d;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    th {
+      background: rgba(0,0,0,0.3);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>📚 Library Management System</header>
+  
+  <div class="container">
+    <nav>
+      <button onclick="showSection('books')">Books</button>
+      <button onclick="showSection('members')">Members</button>
+      <button onclick="showSection('issue')">Issue Book</button>
+      <button onclick="showSection('return')">Return Book</button>
+      <button onclick="showSection('records')">Records</button>
+    </nav>
+
+    <!-- Books -->
+    <div id="books" class="section active">
+      <h2>Add Book</h2>
+      <form id="bookForm">
+        <input type="text" id="btitle" placeholder="Book Title" required>
+        <input type="text" id="bauthor" placeholder="Author" required>
+        <input type="text" id="bisbn" placeholder="ISBN" required>
+        <button type="submit">Add Book</button>
+      </form>
+      <table id="bookTable">
+        <tr><th>Title</th><th>Author</th><th>ISBN</th></tr>
+      </table>
+    </div>
+
+    <!-- Members -->
+    <div id="members" class="section">
+      <h2>Add Member</h2>
+      <form id="memberForm">
+        <input type="text" id="mname" placeholder="Member Name" required>
+        <input type="text" id="mid" placeholder="Member ID" required>
+        <button type="submit">Add Member</button>
+      </form>
+      <table id="memberTable">
+        <tr><th>Name</th><th>Member ID</th></tr>
+      </table>
+    </div>
+
+    <!-- Issue -->
+    <div id="issue" class="section">
+      <h2>Issue Book</h2>
+      <form id="issueForm">
+        <input type="text" id="ibook" placeholder="Book Title" required>
+        <input type="text" id="imember" placeholder="Member Name" required>
+        <input type="date" id="idate" required>
+        <button type="submit">Issue</button>
+      </form>
+      <table id="issueTable">
+        <tr><th>Book</th><th>Member</th><th>Date</th></tr>
+      </table>
+    </div>
+
+    <!-- Return -->
+    <div id="return" class="section">
+      <h2>Return Book</h2>
+      <form id="returnForm">
+        <input type="text" id="rbook" placeholder="Book Title" required>
+        <input type="text" id="rmember" placeholder="Member Name" required>
+        <input type="date" id="rdate" required>
+        <button type="submit">Return</button>
+      </form>
+      <table id="returnTable">
+        <tr><th>Book</th><th>Member</th><th>Return Date</th></tr>
+      </table>
+    </div>
+
+    <!-- Records -->
+    <div id="records" class="section">
+      <h2>Library Records</h2>
+      <p>📌 All book, member, issue, and return records are listed above in their respective sections.</p>
+    </div>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    // Books
+    document.getElementById("bookForm").addEventListener("submit", e => {
+      e.preventDefault();
+      let title = document.getElementById("btitle").value;
+      let author = document.getElementById("bauthor").value;
+      let isbn = document.getElementById("bisbn").value;
+      let table = document.getElementById("bookTable");
+      let row = table.insertRow();
+      row.innerHTML = `<td>${title}</td><td>${author}</td><td>${isbn}</td>`;
+      e.target.reset();
+    });
+
+    // Members
+    document.getElementById("memberForm").addEventListener("submit", e => {
+      e.preventDefault();
+      let name = document.getElementById("mname").value;
+      let id = document.getElementById("mid").value;
+      let table = document.getElementById("memberTable");
+      let row = table.insertRow();
+      row.innerHTML = `<td>${name}</td><td>${id}</td>`;
+      e.target.reset();
+    });
+
+    // Issue
+    document.getElementById("issueForm").addEventListener("submit", e => {
+      e.preventDefault();
+      let book = document.getElementById("ibook").value;
+      let member = document.getElementById("imember").value;
+      let date = document.getElementById("idate").value;
+      let table = document.getElementById("issueTable");
+      let row = table.insertRow();
+      row.innerHTML = `<td>${book}</td><td>${member}</td><td>${date}</td>`;
+      e.target.reset();
+    });
+
+    // Return
+    document.getElementById("returnForm").addEventListener("submit", e => {
+      e.preventDefault();
+      let book = document.getElementById("rbook").value;
+      let member = document.getElementById("rmember").value;
+      let date = document.getElementById("rdate").value;
+      let table = document.getElementById("returnTable");
+      let row = table.insertRow();
+      row.innerHTML = `<td>${book}</td><td>${member}</td><td>${date}</td>`;
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
